@@ -67,5 +67,44 @@ namespace TourFlowBE.Controller
                 }).ToListAsync();
             return Ok(tours);
         }
+
+        [HttpGet("getallforai")]
+        public async Task<IActionResult> GetAllAI()
+        { 
+            var tours = await (from tour in _dbContext.Tours 
+                join cityDestination in _dbContext.CityDestinations 
+                on tour.CityDestinationId equals cityDestination.Id
+                join countryDestination in _dbContext.CountryDestinations
+                on cityDestination.CountryDestinationId equals countryDestination.Id  
+                select new {
+                    tour.Id,
+                    tour.DepartureLocation,
+                    cityDestination.City,
+                    countryDestination.Country,
+                    tour.StartDate,
+                    tour.EndDate,
+                    Duration = tour.EndDate - tour.StartDate,
+                    tour.Price,
+                    tour.AvailableSlots, 
+                    FirstImageUrl = _dbContext.Imgs
+                        .Where(img => img.CityDestinationId == cityDestination.Id)
+                        .Select(img => img.Url)
+                        .FirstOrDefault() 
+                }).ToListAsync();
+
+                var formattedTours = tours.Select(t => new {
+                    t.Id,
+                    t.DepartureLocation,
+                    t.City,
+                    t.Country,
+                    StartDate = t.StartDate?.ToString("dd-MM-yy"), // Format here
+                    EndDate = t.EndDate?.ToString("dd-MM-yy"),
+                    t.Duration.Value.Days,
+                    t.Price,
+                    t.AvailableSlots,
+                    t.FirstImageUrl
+                }).ToList(); 
+            return Ok(formattedTours);
+        }
     }
 }
