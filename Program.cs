@@ -1,3 +1,5 @@
+using System.Net;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.EntityFrameworkCore;
 using TourFlowBE.Models;
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +16,19 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddDbContext<TourFlowContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    serverOptions.ListenAnyIP(5175);  
+});
+ 
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    serverOptions.Listen(IPAddress.Any, 5175, listenOptions =>
+    {
+        listenOptions.Protocols = HttpProtocols.Http1AndHttp2; 
+    });
+});
 var app = builder.Build();
  
 
