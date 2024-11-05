@@ -68,6 +68,8 @@ namespace TourFlowBE.Controller
             return Ok(tours);
         }
 
+
+        //url : http://localhost:5175/api/tour/getallforai
         [HttpGet("getallforai")]
         public async Task<IActionResult> GetAllAI()
         { 
@@ -97,7 +99,7 @@ namespace TourFlowBE.Controller
                     t.DepartureLocation,
                     t.City,
                     t.Country,
-                    StartDate = t.StartDate?.ToString("dd-MM-yy"), // Format here
+                    StartDate = t.StartDate?.ToString("dd-MM-yy"),  
                     EndDate = t.EndDate?.ToString("dd-MM-yy"),
                     t.Duration.Value.Days,
                     t.Price,
