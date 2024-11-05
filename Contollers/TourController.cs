@@ -14,6 +14,11 @@ namespace TourFlowBE.Controller
             _dbContext = dbContext;
         }
 
+        [HttpGet("test")]
+        public IActionResult Get()
+        {
+            return Ok("hi");
+        }
         // http://localhost:5175/api/tour/
         [HttpGet]
         public async Task<ActionResult> GetAllTours()
