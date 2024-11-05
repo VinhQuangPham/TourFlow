@@ -19,7 +19,10 @@ builder.Services.AddDbContext<TourFlowContext>(options =>
 
 builder.WebHost.ConfigureKestrel(serverOptions =>
 {
-    serverOptions.ListenAnyIP(5175);  
+    serverOptions.ListenAnyIP(5175, options =>
+    {
+        options.Protocols = HttpProtocols.Http1AndHttp2;
+    });
 });
  
 builder.WebHost.ConfigureKestrel(serverOptions =>
