@@ -4715,11 +4715,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/vinhpham/Documents/HSU/DoAnChuyenNganhA/TourFlowBE/TourFlowBE.csproj",
+      "projectUniqueName": "/Users/vinhpham/Documents/HSU/DoAnChuyenNganhA/TourFlow_gitBE/TourFlowBE.csproj",
       "projectName": "TourFlowBE",
-      "projectPath": "/Users/vinhpham/Documents/HSU/DoAnChuyenNganhA/TourFlowBE/TourFlowBE.csproj",
+      "projectPath": "/Users/vinhpham/Documents/HSU/DoAnChuyenNganhA/TourFlow_gitBE/TourFlowBE.csproj",
       "packagesPath": "/Users/vinhpham/.nuget/packages/",
-      "outputPath": "/Users/vinhpham/Documents/HSU/DoAnChuyenNganhA/TourFlowBE/obj/",
+      "outputPath": "/Users/vinhpham/Documents/HSU/DoAnChuyenNganhA/TourFlow_gitBE/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/vinhpham/.nuget/NuGet/NuGet.Config"

@@ -46,6 +46,8 @@ namespace TourFlowBE.Controller
             return Ok(tours);
         }
 
+   
+
         [HttpGet("{destinationid}")]
         public async Task<IActionResult> GetTours(int destinationid)
         {

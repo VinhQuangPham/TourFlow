@@ -22,6 +22,34 @@ namespace TourFlowBE.Controller
             return Ok(countries);
         }
 
+        
+        [HttpGet("{country}/cities")]
+        public async Task<IActionResult> GetCities(string country)
+        {
+            var cities = await (from city in _dbContext.CityDestinations 
+                                join countries in _dbContext.CountryDestinations
+                                on city.CountryDestinationId equals countries.Id
+                                where countries.Country == country
+                                select new {
+                                    city.Id,
+                                    city.City
+                                })
+                                
+                                .ToListAsync();
+            return Ok(cities);
+        }
+
+        [HttpGet("city/{cityname}")]
+        public async Task<IActionResult> GetCity(string cityname)
+        {
+            var city = await _dbContext.CityDestinations
+                            .Select(c => new {
+                                c.Id,
+                                c.City
+                            }).Where(c=>c.City == cityname)
+                            .ToListAsync();
+            return Ok(city);
+        }
         //Get cities
         [HttpGet("cities")]
         public async Task<IActionResult> GetCities()
