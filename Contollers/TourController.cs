@@ -48,8 +48,8 @@ namespace TourFlowBE.Controller
 
    
 
-        [HttpGet("{destinationid}")]
-        public async Task<IActionResult> GetTours(int destinationid)
+        [HttpGet("destination/{destinationid}")]
+        public async Task<IActionResult> GetToursByDestinationId(int destinationid)
         {
             var tours = await (from tour in _dbContext.Tours 
                 join cityDestination in _dbContext.CityDestinations 
@@ -114,6 +114,21 @@ namespace TourFlowBE.Controller
                     t.FirstImageUrl
                 }).ToList(); 
             return Ok(formattedTours);
+        }
+
+        [HttpGet("{tourid}")]
+        public async Task<IActionResult> GetTour(int tourid)
+        {
+            var tour = await _dbContext.Tours
+                .Include(t => t.TourPlans)
+                .Where(t => t.Id == tourid).ToListAsync();
+            if (tour != null)
+            {
+                return Ok(tour);
+            } else {
+                return NotFound();
+            }
+
         }
     }
 }
