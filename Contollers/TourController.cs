@@ -126,15 +126,15 @@ namespace TourFlowBE.Controller
             {
                 t.Id,
                 t.DepartureLocation,
-                City = t.CityDestination.City,
+                t.CityDestination.City,
                 t.StartDate,
                 t.EndDate,
-                Duration = t.EndDate - t.StartDate,
+                Duration = (t.EndDate - t.StartDate).Value.Days + 1,
                 t.Price,
                 t.AvailableSlots,
                 TourPlans = t.TourPlans.Select(tp =>  tp.Detail ).ToList()
             })
-            .ToListAsync();
+            .FirstOrDefaultAsync();
             if (tour != null)
             {
                 return Ok(tour);
