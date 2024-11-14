@@ -118,11 +118,7 @@ namespace TourFlowBE.Controller
 
         [HttpGet("{tourid}")]
         public async Task<IActionResult> GetTour(int tourid)
-        {
-            // var tour = await _dbContext.Tours
-            //     .Include(t => t.TourPlans) 
-            //     .Where(t => t.Id == tourid) 
-            //     .ToListAsync();
+        { 
             var tour = await _dbContext.Tours
             .Where(t => t.Id == tourid)
             .Include(t => t.TourPlans)
@@ -136,7 +132,7 @@ namespace TourFlowBE.Controller
                 Duration = t.EndDate - t.StartDate,
                 t.Price,
                 t.AvailableSlots,
-                TourPlans = t.TourPlans.Select(tp => new { tp.Detail }).ToList()
+                TourPlans = t.TourPlans.Select(tp =>  tp.Detail ).ToList()
             })
             .ToListAsync();
             if (tour != null)
