@@ -92,7 +92,7 @@ namespace TourFlowBE.Controller
                     countryDestination.Country,
                     tour.StartDate,
                     tour.EndDate,
-                    Duration = tour.EndDate - tour.StartDate,
+                    Duration = tour.EndDate - tour.StartDate, 
                     tour.Price,
                     tour.AvailableSlots, 
                     FirstImageUrl = _dbContext.Imgs
@@ -108,7 +108,7 @@ namespace TourFlowBE.Controller
                     t.Country,
                     StartDate = t.StartDate?.ToString("dd-MM-yy"),  
                     EndDate = t.EndDate?.ToString("dd-MM-yy"),
-                    t.Duration.Value.Days,
+                    Duration = t.Duration?.Days+1,
                     t.Price,
                     t.AvailableSlots,
                     t.FirstImageUrl
