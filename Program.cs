@@ -1,9 +1,12 @@
-using System.Net;
-using Microsoft.AspNetCore.Server.Kestrel.Core;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using TourFlowBE.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
+builder.Services.AddSingleton<GoogleTokenService>();
 builder.Services.AddCors(options =>
         {
             options.AddPolicy("AllowSpecificOrigin", builder =>
@@ -17,25 +20,37 @@ builder.Services.AddCors(options =>
 builder.Services.AddDbContext<TourFlowContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// builder.WebHost.ConfigureKestrel(serverOptions =>
-// {
-//     serverOptions.ListenAnyIP(5175, options =>
-//     {
-//         options.Protocols = HttpProtocols.Http1AndHttp2;
-//     });
-// });
- 
-// builder.WebHost.ConfigureKestrel(serverOptions =>
-// {
-//     serverOptions.Listen(IPAddress.Any, 5175, listenOptions =>
-//     {
-//         listenOptions.Protocols = HttpProtocols.Http1AndHttp2; 
-//     });
-// });
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options=>{
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+        };
+    });
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAllOrigins",
+        builder =>
+        {
+            builder.AllowAnyOrigin()
+                   .AllowAnyMethod()
+                   .AllowAnyHeader();
+        });
+});
+builder.Services.AddAuthorization();
 var app = builder.Build();
  
 
 app.UseHttpsRedirection();
+app.UseAuthentication();
+app.UseAuthorization();
 app.UseCors("AllowSpecificOrigin");
 app.MapControllers();
 

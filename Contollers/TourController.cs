@@ -8,10 +8,10 @@ namespace TourFlowBE.Controller
     [Route("api/[controller]")]
     public class TourController: ControllerBase
     {
-        private readonly TourFlowContext _dbContext;
+        private readonly TourFlowContext _dbContext; 
         public TourController(TourFlowContext dbContext)
         {
-            _dbContext = dbContext;
+            _dbContext = dbContext; 
         }
 
         [HttpGet("test")]
@@ -19,11 +19,17 @@ namespace TourFlowBE.Controller
         {
             return Ok("hi");
         }
-        // http://localhost:5175/api/tour/
+ 
+
+        // http://localhost:5175/api/tour?page=1&limit=10
         [HttpGet]
-        public async Task<ActionResult> GetAllTours()
+        public async Task<ActionResult> GetAllTours(int page = 1, int limit = 10)
         {
-            var tours = from tour in _dbContext.Tours 
+            if (page <= 0 || limit <= 0)
+            {
+                return BadRequest("page or limit must be greater than 0");
+            }
+            var tours = (from tour in _dbContext.Tours 
                         join cityDestination in _dbContext.CityDestinations 
                         on tour.CityDestinationId equals cityDestination.Id
                         join countryDestination in _dbContext.CountryDestinations
@@ -42,15 +48,35 @@ namespace TourFlowBE.Controller
                                 .Where(img => img.CityDestinationId == cityDestination.Id)
                                 .Select(img => img.Url)
                                 .FirstOrDefault() 
-                        };
-            return Ok(tours);
+                        }).ToList(); 
+
+            var totalItems = tours.Count;
+            var totalPages = (int)Math.Ceiling(totalItems / (double)limit);
+            var paginatedItems = tours.Skip((page - 1) * limit)
+                                    .Take(limit);
+            var response = new
+                            {
+                                data = paginatedItems,
+                                currentPage = page,
+                                totalPages = totalPages
+                            };
+            return Ok(response);
         }
+
+        
+
+        
 
    
 
         [HttpGet("destination/{destinationid}")]
-        public async Task<IActionResult> GetToursByDestinationId(int destinationid)
+        public async Task<IActionResult> GetToursByDestinationId(
+                                                    int destinationid, int page = 1, int limit = 10)
         {
+            if (page <= 0 || limit <= 0)
+            {
+                return BadRequest("page or limit must be greater than 0");
+            }
             var tours = await (from tour in _dbContext.Tours 
                 join cityDestination in _dbContext.CityDestinations 
                 on tour.CityDestinationId equals cityDestination.Id
@@ -72,7 +98,17 @@ namespace TourFlowBE.Controller
                         .Select(img => img.Url)
                         .FirstOrDefault() 
                 }).ToListAsync();
-            return Ok(tours);
+                 var totalItems = tours.Count;
+            var totalPages = (int)Math.Ceiling(totalItems / (double)limit);
+            var paginatedItems = tours.Skip((page - 1) * limit)
+                                    .Take(limit);
+            var response = new
+                            {
+                                data = paginatedItems,
+                                currentPage = page,
+                                totalPages = totalPages
+                            };
+            return Ok(response); 
         }
 
 
@@ -144,4 +180,6 @@ namespace TourFlowBE.Controller
 
         }
     }
+ 
+
 }
