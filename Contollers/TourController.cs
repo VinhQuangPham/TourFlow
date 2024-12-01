@@ -1,6 +1,8 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TourFlowBE.Models;
+using TourFlowBE.ModelDtos;
 
 namespace TourFlowBE.Controller
 {
@@ -179,7 +181,87 @@ namespace TourFlowBE.Controller
             }
 
         }
-    }
- 
+        [HttpPost]
+        [Authorize(Roles = "True")]
+        public async Task<IActionResult> PostTour([FromBody]PostTourDto postTour)
+        {
+            try
+            {
+                var newTour = new Tour{
+                    CityDestinationId =  postTour.CityDestinationId,
+                    DepartureLocation = postTour.DepartureLocation,
+                    StartDate = postTour.StartDate,
+                    EndDate = postTour.EndDate,
+                    Price = postTour.Price,
+                    AvailableSlots = postTour.AvailableSlots,
+                };
+                await _dbContext.Tours.AddAsync(newTour);
+                await _dbContext.SaveChangesAsync();
+                var tourId = newTour.Id;
 
+                var tourPlanController = new TourPlanController(_dbContext);
+                await tourPlanController.Post(postTour.plans, tourId);
+                await _dbContext.SaveChangesAsync();
+                
+
+                return Ok("Post successfully");
+
+            } catch (Exception e){
+                return BadRequest(e);
+            }
+        }
+        
+        [HttpPut("{tourId}")]
+        [Authorize(Roles ="True")]
+        public async Task<IActionResult> PutTour([FromBody]PutTourDto tourUpdate, int tourId)
+        {
+            var currentTour = await _dbContext.Tours.FindAsync(tourId);
+            if (currentTour == null)
+            {
+                return NotFound("Error occur, can not find the tour");
+            } else {
+                if (tourUpdate.DepartureLocation != currentTour.DepartureLocation)
+                {
+                    currentTour.DepartureLocation = tourUpdate.DepartureLocation;
+                }
+                if (tourUpdate.StartDate != currentTour.StartDate)
+                {
+                    currentTour.StartDate = tourUpdate.StartDate;
+                }
+                if (tourUpdate.EndDate != currentTour.EndDate)
+                {
+                    currentTour.EndDate = tourUpdate.EndDate;
+                }
+                if (tourUpdate.Price != currentTour.Price)
+                {
+                    currentTour.Price = tourUpdate.Price;
+                } 
+                if (tourUpdate.AvailableSlots != currentTour.AvailableSlots)
+                {
+                    currentTour.AvailableSlots = tourUpdate.AvailableSlots;
+                }
+                var tourPlanController = new TourPlanController(_dbContext);
+                await tourPlanController.Put(tourId, tourUpdate.plans);
+                await tourPlanController.Post(tourUpdate.newPlans, tourId);
+                await _dbContext.SaveChangesAsync();
+                return Ok("Updated succesfully");
+
+            }
+        }   
+
+        [HttpDelete("{tourId}")]
+        [Authorize(Roles ="True")]
+        public  async Task<IActionResult> Delete(int tourId)
+        {
+            var currentTour = await _dbContext.Tours.FindAsync(tourId);
+            if (currentTour == null)
+            {
+                return NotFound();
+            } else {
+                 _dbContext.Tours.Remove(currentTour);
+                 await _dbContext.SaveChangesAsync();
+                 return Ok();
+            }
+        }
+    }
 }

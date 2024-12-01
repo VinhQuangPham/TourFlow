@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TourFlowBE.Models;
+using TourFlowBE.ModelDtos;
 
 namespace TourFlowBE.Controller
 {
@@ -22,5 +23,23 @@ namespace TourFlowBE.Controller
                             
             return Ok(await query.ToListAsync());
         }
+        [HttpPost]
+        public async Task<IActionResult> Post(List<string> listImgs, int cityDestinationId)
+        {
+            try
+            {
+                listImgs.ForEach(async img => {
+                   await _dbContext.Imgs.AddAsync(new Img{
+                        CityDestinationId =  cityDestinationId,
+                        Url = img,
+                    });
+                });
+                // await _dbContext.SaveChangesAsync();
+                return Ok("Add all images successfully");
+            } catch (Exception e) {
+                return BadRequest(e);
+            }   
+        }
     }
+
 }

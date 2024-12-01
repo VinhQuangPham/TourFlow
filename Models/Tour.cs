@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace TourFlowBE.Models;
 
@@ -20,6 +21,9 @@ public partial class Tour
     public int? AvailableSlots { get; set; }
 
     public virtual CityDestination? CityDestination { get; set; }
+
+    [JsonIgnore]
+    public virtual ICollection<TourOrder> TourOrders { get; set; } = new List<TourOrder>();
 
     public virtual ICollection<TourPlan> TourPlans { get; set; } = new List<TourPlan>();
 }

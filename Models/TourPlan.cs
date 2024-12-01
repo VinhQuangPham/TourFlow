@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
 
 namespace TourFlowBE.Models;
 
@@ -12,6 +11,5 @@ public partial class TourPlan
 
     public string? Detail { get; set; }
 
-    [JsonIgnore]
     public virtual Tour? Tour { get; set; }
 }

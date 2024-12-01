@@ -2,10 +2,11 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using TourFlowBE.Models;
-
+using TourFlowBE.Models; 
+using TourFlow_gitBE.Services;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
+
 builder.Services.AddSingleton<GoogleTokenService>();
 builder.Services.AddCors(options =>
         {
@@ -33,6 +34,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
         };
     });
+builder.Services.AddScoped<ITokenGenerating, TokenGenerating>();
 
 builder.Services.AddCors(options =>
 {
