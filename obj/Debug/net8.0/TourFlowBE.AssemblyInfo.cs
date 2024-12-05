@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TourFlowBE")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c977e4ac67190ae896a8509d857d8f6a9779b9e1")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+25330579a552e191d22462f1d52c482776ef805f")]
 [assembly: System.Reflection.AssemblyProductAttribute("TourFlowBE")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TourFlowBE")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

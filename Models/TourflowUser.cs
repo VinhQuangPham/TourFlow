@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System;
+using System.Collections.Generic;
 
 namespace TourFlowBE.Models;
 
@@ -18,6 +19,7 @@ public partial class TourflowUser
 
     public string? AvatarUrl { get; set; }
 
-    [JsonIgnore]
     public virtual ICollection<TourOrder> TourOrders { get; set; } = new List<TourOrder>();
+
+    public virtual ICollection<UserDataCollection> UserDataCollections { get; set; } = new List<UserDataCollection>();
 }

@@ -33,15 +33,17 @@ public async Task<IActionResult> Get()
                         where user.IsAdmin == false
                         select new 
                         {
+                            userId = user.Id,
                             userName = user.TourflowUserName,
                             userEmail = user.Email,
                             avatar = user.AvatarUrl,
                             bookDate = order.BookDate,
                             cityDestination = city.City
                         })
-                        .GroupBy(x => new { x.userName, x.userEmail, x.avatar })
+                        .GroupBy(x => new {x.userId, x.userName, x.userEmail, x.avatar })
                         .Select(g => new
                         {
+                            g.Key.userId,   
                             g.Key.userName,
                             g.Key.userEmail,
                             g.Key.avatar,
