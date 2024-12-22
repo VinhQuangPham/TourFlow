@@ -39,7 +39,7 @@ public partial class TourFlowContext : DbContext
     {
         modelBuilder.Entity<CityDestination>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__CityDest__3214EC27E3432E63");
+            entity.HasKey(e => e.Id).HasName("PK__CityDest__3214EC276DC139FC");
 
             entity.ToTable("CityDestination");
 
@@ -55,7 +55,7 @@ public partial class TourFlowContext : DbContext
 
         modelBuilder.Entity<CountryDestination>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__CountryD__3214EC27E014221E");
+            entity.HasKey(e => e.Id).HasName("PK__CountryD__3214EC273E23E28D");
 
             entity.ToTable("CountryDestination");
 
@@ -65,7 +65,7 @@ public partial class TourFlowContext : DbContext
 
         modelBuilder.Entity<Img>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__IMGs__3214EC27E76E6D09");
+            entity.HasKey(e => e.Id).HasName("PK__IMGs__3214EC273C3BB5CC");
 
             entity.ToTable("IMGs");
 
@@ -83,7 +83,7 @@ public partial class TourFlowContext : DbContext
 
         modelBuilder.Entity<Tour>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Tour__3214EC2765673022");
+            entity.HasKey(e => e.Id).HasName("PK__Tour__3214EC27E90099FE");
 
             entity.ToTable("Tour");
 
@@ -101,7 +101,7 @@ public partial class TourFlowContext : DbContext
 
         modelBuilder.Entity<TourOrder>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__TourOrde__3214EC2759585BA7");
+            entity.HasKey(e => e.Id).HasName("PK__TourOrde__3214EC2706EAF0D4");
 
             entity.ToTable("TourOrder", tb => tb.HasTrigger("trg_DecreaseProductQuantity"));
 
@@ -120,7 +120,7 @@ public partial class TourFlowContext : DbContext
 
         modelBuilder.Entity<TourPlan>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__TourPlan__3214EC27212578AE");
+            entity.HasKey(e => e.Id).HasName("PK__TourPlan__3214EC277D942162");
 
             entity.ToTable("TourPlan");
 
@@ -135,7 +135,7 @@ public partial class TourFlowContext : DbContext
 
         modelBuilder.Entity<TourflowUser>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Tourflow__3214EC275AD69DA5");
+            entity.HasKey(e => e.Id).HasName("PK__Tourflow__3214EC2768A0A51E");
 
             entity.ToTable("TourflowUser");
 
@@ -156,14 +156,16 @@ public partial class TourFlowContext : DbContext
 
         modelBuilder.Entity<UserDataCollection>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__User_Dat__3214EC27B397A7A2");
+            entity.HasKey(e => e.Id).HasName("PK__User_Dat__3214EC27392345F2");
 
             entity.ToTable("User_DataCollection");
 
             entity.Property(e => e.Id).HasColumnName("ID");
-            entity.Property(e => e.Departure).HasMaxLength(200);
-            entity.Property(e => e.ExpectedDestination).HasMaxLength(100);
+            entity.Property(e => e.Duration).HasMaxLength(100);
+            entity.Property(e => e.EndPos).HasMaxLength(100);
             entity.Property(e => e.PhoneNumber).HasMaxLength(10);
+            entity.Property(e => e.StarPos).HasMaxLength(100);
+            entity.Property(e => e.TourId).HasColumnName("TourID");
             entity.Property(e => e.UserId).HasColumnName("UserID");
 
             entity.HasOne(d => d.User).WithMany(p => p.UserDataCollections)

@@ -24,6 +24,12 @@ namespace TourFlow_gitBE.Contollers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody]TourOrderDto order)
         { 
+            if (order == null){
+                return BadRequest("Order was null");
+            } 
+            if (order.Slots < 1) {
+                return BadRequest("Slot < 1 ");
+            }
 
             var tourOrder = new TourOrder{ 
                 BookDate = DateTime.Now,

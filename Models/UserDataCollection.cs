@@ -11,15 +11,19 @@ public partial class UserDataCollection
 
     public string? PhoneNumber { get; set; }
 
-    public string? ExpectedDestination { get; set; }
+    public int? TourId { get; set; }
 
-    public string? Departure { get; set; }
+    public string? StarPos { get; set; }
 
-    public int? Budget { get; set; }
+    public string? EndPos { get; set; }
 
-    public int? Participants { get; set; }
+    public DateOnly? StartDate { get; set; }
 
-    public DateOnly? ExpectedDate { get; set; }
+    public string? Duration { get; set; }
+
+    public double? Budget { get; set; }
+
+    public int? AvailableSlot { get; set; }
 
     public virtual TourflowUser? User { get; set; }
 }

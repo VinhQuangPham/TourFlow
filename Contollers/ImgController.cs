@@ -18,7 +18,10 @@ namespace TourFlowBE.Controller
         [HttpGet("{TourId}")]
         public async Task<IActionResult> Get(int TourId)
         {
-            var query =  from imgs in _dbContext.Imgs where imgs.CityDestinationId == TourId
+            var query =  from imgs in _dbContext.Imgs 
+                            join tour in _dbContext.Tours
+                            on imgs.CityDestinationId equals tour.CityDestinationId
+                            where tour.Id == TourId
                             select imgs.Url;
                             
             return Ok(await query.ToListAsync());

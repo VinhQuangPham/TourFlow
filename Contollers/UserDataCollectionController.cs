@@ -15,6 +15,7 @@ public class UserDataCollectionController: ControllerBase
     [HttpPost]
     public async Task<IActionResult> Post([FromBody]UserDataCollection userInfor)
     {
+        Console.WriteLine("User Data Information: " + userInfor.StartDate);
         await _tourFlowContext.UserDataCollections.AddAsync(userInfor);
         int result = await _tourFlowContext.SaveChangesAsync();
         if (result == 0)
@@ -25,10 +26,22 @@ public class UserDataCollectionController: ControllerBase
         }
     }
     
+    
     [HttpGet("{userId}")]
     public async Task<IActionResult> Get(int userId)
     {
-        var result =  await _tourFlowContext.UserDataCollections.Where(u=>u.UserId == userId).ToListAsync();      
+        var result =  await _tourFlowContext.UserDataCollections
+            .Where(u=>u.UserId == userId)
+            .Select(u=> new {
+                u.PhoneNumber, 
+                u.StarPos,
+                u.EndPos,
+                u.StartDate,
+                u.Duration,
+                u.Budget,
+                u.AvailableSlot
+            })
+            .ToListAsync();      
         return Ok(result);       
     }
 }
