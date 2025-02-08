@@ -43,7 +43,9 @@ namespace TourFlowBE.Controller
                             countryDestination.Country,
                             tour.StartDate,
                             tour.EndDate,
-                            Duration = tour.EndDate - tour.StartDate,
+                            // Duration = tour.EndDate - tour.StartDate,
+                            Duration = _dbContext.TourPlans.Count(tp => tp.Id == tour.Id),
+
                             tour.Price,
                             tour.AvailableSlots, 
                             FirstImageUrl = _dbContext.Imgs
